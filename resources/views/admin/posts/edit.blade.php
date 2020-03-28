@@ -15,8 +15,8 @@
 @section('content')
 
     <div class="row">
-        <form method="POST" action="{{ route('admin.posts.store')}}">
-            {{csrf_field()}}
+        <form method="POST" action="{{ route('admin.posts.update', $post)}}">
+            {{csrf_field()}} {{method_field('PUT')}}
             <div class="col-md-8">
                 
                 <div class="box box-primary">
@@ -24,14 +24,20 @@
                         <div class="box-body">
                             <div class="form-group {{$errors->has('title') ? 'has-error' : ''}}">
                                 <label for="">Titulo del post <small>(obligatorio)</small></label>
-                                <input name="title" type="text" class="form-control" placeholder="Ingresa el titulo" value={{old('title')}}>
+                                <input 
+                                name="title" 
+                                type="text" 
+                                class="form-control" 
+                                placeholder="Ingresa el titulo" 
+                                value="{{ old('title', $post->title) }}">
+
                                 {!! $errors->first('title', '<span class="help-block">:message</span>') !!}
                                 
                             </div>
 
                             <div class="form-group {{$errors->has('body') ? 'has-error' : ''}}">
                                 <label for="">Contenido del post <small>(obligatorio)</small></label>
-                                <textarea rows="10" id="editor" name="body" class="form-control" placeholder="Ingresa el contenido">{{old('body')}}</textarea>
+                                <textarea rows="10" id="editor" name="body" class="form-control" placeholder="Ingresa el contenido">{{old('body', $post->body)}}</textarea>
                                 {!! $errors->first('body', '<span class="help-block">:message</span>') !!}
                             </div>
 
@@ -52,7 +58,11 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input name="published_at" type="text" class="form-control pull-right" id="datepicker">
+                                <input name="published_at" 
+                                type="text" 
+                                class="form-control pull-right" 
+                                value="{{ old('published_at', $post->published_at ? $post->published_at->format('m/d/Y'): null) }}"
+                                id="datepicker">
                             </div>
                             <!-- /.input group -->
                         </div>
@@ -63,7 +73,9 @@
                             <select name="category" class="form-control">
                                 <option value="">Selecciona una categoria</option>
                                 @foreach ($categories as $category)
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                    <option value="{{$category->id}}"
+                                        {{old('category', $post->category_id) == $category->id ? 'selected' : ''}}
+                                        >{{$category->name}}</option>
                                 @endforeach
                             </select>
                             {!! $errors->first('category', '<span class="help-block">:message</span>') !!}
@@ -82,8 +94,14 @@
                         <!--EXTRACTO-->
                         <div class="form-group {{$errors->has('excerpt') ? 'has-error' : ''}}">
                             <label for="">Extracto del post <small>(obligatorio)</small></label>
-                            <textarea name="excerpt" class="form-control" placeholder="Ingresa el extracto">{{old('excerpt')}}</textarea>
+                            <textarea name="excerpt" class="form-control" placeholder="Ingresa el extracto">{{old('excerpt', $post->excerpt)}}</textarea>
                             {!! $errors->first('excerpt', '<span class="help-block">:message</span>') !!}
+                        </div>
+
+                        <div class="form-group">
+                            <div class="dropzone">
+
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -105,10 +123,12 @@
 @endpush()
 
 @push('scripts')
-<!-- bootstrap datepicker -->
-<script src="/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
 <!-- CK Editor -->
 <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
+<!-- bootstrap datepicker -->
+<script src="/adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
 <!-- Select2 -->
 <script src="/adminlte/bower_components/select2/dist/js/select2.full.min.js"></script>
 <script>
@@ -121,7 +141,10 @@
     CKEDITOR.replace('editor');
 
     //Initialize Select2 Elements
-    $('.select2').select2()
+    $('.select2').select2();
+
+    
 </script>
 @endpush()
+
 

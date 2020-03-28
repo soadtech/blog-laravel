@@ -377,6 +377,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
 
+@include('admin.posts.create')
 
 <script>
   $(function () {

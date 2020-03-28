@@ -15,7 +15,7 @@
     <div class="box box-primary">
             <div class="box-header">
               <h3 class="box-title">Listado de Publicaciones</h3>
-              {{-- <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal">Crear publicacion</button> --}}
+              <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#exampleModal">Crear publicacion</button>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
@@ -51,7 +51,7 @@
 @stop
 
 <!-- Modal -->
-{{-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <form method="POST" action="{{ route('admin.posts.store')}}">
             {{csrf_field()}}
     <div class="modal-dialog" role="document">
@@ -65,7 +65,7 @@
         <div class="modal-body">
           <div class="form-group {{$errors->has('title') ? 'has-error' : ''}}">
                 {{-- <label for="">Titulo del post <small>(obligatorio)</small></label> --}}
-                {{-- <input name="title" type="text" class="form-control" placeholder="Ingresa el titulo" value={{old('title')}}>
+                 <input name="title" type="text" class="form-control" placeholder="Ingresa el titulo" value={{old('title')}}>
                 {!! $errors->first('title', '<span class="help-block">:message</span>') !!}
                                 
           </div>
@@ -77,4 +77,4 @@
       </div>
     </div>
   </form>
-</div> --}} 
+</div> 

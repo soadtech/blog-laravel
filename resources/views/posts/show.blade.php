@@ -5,8 +5,12 @@
 @section('content')
 <article class="post container">
     @if($post->photos->count() === 1)
-				<figure><img src="{{ $post->photos->first()->url }}" alt="" class="img-responsive"></figure>
-			@endif
+		<figure><img src="{{ $post->photos->first()->url }}" alt="" class="img-responsive"></figure>
+	@elseif($post->iframe)
+		<div class="video">
+			{!! $post->iframe !!}
+		</div>
+	@endif
     <div class="content-post">
         <header class="container-flex space-between">
             <div class="date">

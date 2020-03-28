@@ -41,6 +41,12 @@
                                 {!! $errors->first('body', '<span class="help-block">:message</span>') !!}
                             </div>
 
+                            <div class="form-group {{$errors->has('iframe') ? 'has-error' : ''}}">
+                                <label for="">Agregar videos <small>(obligatorio)</small></label>
+                                <textarea rows="2" id="editor" name="iframe" class="form-control" placeholder="Ingresa el contenido">{{old('iframe', $post->iframe)}}</textarea>
+                                {!! $errors->first('iframe', '<span class="help-block">:message</span>') !!}
+                            </div>
+
                             
                         </div>
                     
@@ -71,7 +77,7 @@
                         <!--categorias-->
                         <div class="form-group {{$errors->has('category') ? 'has-error' : ''}}">
                             <label for="">Categorias <small>(obligatorio)</small></label>
-                            <select name="category" class="form-control">
+                            <select name="category" class="form-control select2">
                                 <option value="">Selecciona una categoria</option>
                                 @foreach ($categories as $category)
                                     <option value="{{$category->id}}"
@@ -165,7 +171,9 @@
     CKEDITOR.config.height = 240;
 
     //Initialize Select2 Elements
-    $('.select2').select2();
+    $('.select2').select2({
+        tags: true
+    });
 
     var myDropzone = new Dropzone('.dropzone', {
         url: '/admin/posts/{{$post->url}}/photos',

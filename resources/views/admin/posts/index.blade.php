@@ -21,12 +21,12 @@
             <div class="box-body">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Titulo</th>
-                  <th>Extracto</th>
-                  <th>Acciones</th>
-                </tr>
+                  <tr>
+                    <th>ID</th>
+                    <th>Titulo</th>
+                    <th>Extracto</th>
+                    <th>Acciones</th>
+                  </tr>
                 </thead>
                 <tbody>
                     @foreach ($posts as $post)
@@ -35,7 +35,11 @@
                             <td>{{$post->title}}</td>
                             <td>{{$post->excerpt}}</td>
                             <td>
-                                <a href="#" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                                <a href="{{route('posts.show', $post)}}" class="btn btn-default" target="_blank">
+                                  <i class="fa fa-eye"></i>
+                                </a>
+
+                                <a href="{{route('admin.posts.edit', $post)}}" class="btn btn-info"><i class="fa fa-pencil"></i></a>
                                 <a href="#" class="btn btn-danger"><i class="fa fa-times"></i></a>
                             </td>
                         </tr>

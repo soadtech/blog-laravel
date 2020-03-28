@@ -41,6 +41,7 @@
                                 {!! $errors->first('body', '<span class="help-block">:message</span>') !!}
                             </div>
 
+                            
                         </div>
                     
                     
@@ -112,18 +113,40 @@
                 </div>
             </div><!--COL-MD-4-->
         </form>
+
+        @if($post->photos->count())
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="row">
+                        @foreach($post->photos as $photo)
+                            <form method="POST" action="{{route('admin.photos.destroy', $photo)}}">
+                                {{csrf_field()}} {{ method_field('DELETE') }}
+                                <div class="col-md-3">
+                                    <button type="submit"class="btn btn-danger" style="position: absolute"><i class="fa fa-remove"></i></button>
+                                    <img class="img-responsive" src="{{url($photo->url)}}">
+                                </div>
+                            </form>   
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div><!--ROW-->
 @stop
 
 @push('styles')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css">
 <link rel="stylesheet" href="/adminlte/plugins/timepicker/bootstrap-timepicker.min.css">
 <!-- Select2 -->
 <link rel="stylesheet" href="/adminlte/bower_components/select2/dist/css/select2.min.css">
 @endpush()
 
 @push('scripts')
-
+<!-- Dropzone -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/min/dropzone.min.js"></script>
 <!-- CK Editor -->
 <script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <!-- bootstrap datepicker -->
@@ -139,10 +162,31 @@
     });
 
     CKEDITOR.replace('editor');
+    CKEDITOR.config.height = 240;
 
     //Initialize Select2 Elements
     $('.select2').select2();
 
+    var myDropzone = new Dropzone('.dropzone', {
+        url: '/admin/posts/{{$post->url}}/photos',
+        acceptedFiles: 'image/*',
+        paramName: 'photo',
+        maxFilesize: 5,
+        maxFiles: 3,
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        dictDefaultMessage: 'Arrastra las imagenes para subirlas'
+    });
+
+    myDropzone.on('error', function(file, res){
+        console.log(res);
+        
+        // var msg = res.photo;
+        // $('.dz-error-message:last > span').text(msg);
+    });
+
+    Dropzone.autoDiscover = false;
     
 </script>
 @endpush()

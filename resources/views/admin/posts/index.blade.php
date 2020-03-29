@@ -21,10 +21,10 @@
             <div class="box-body">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
-                  <tr>
+                  <tr class="cabezera-tabla">
                     <th>ID</th>
                     <th>Titulo</th>
-                    <th>Extracto</th>
+                    <th>Fecha de publicacion</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
@@ -33,14 +33,19 @@
                         <tr>
                             <td>{{$post->id}}</td>
                             <td>{{$post->title}}</td>
-                            <td>{{$post->excerpt}}</td>
+                            <td>{{$post->published_at->format('m/d/Y')}}</td>
                             <td>
                                 <a href="{{route('posts.show', $post)}}" class="btn btn-default" target="_blank">
                                   <i class="fa fa-eye"></i>
                                 </a>
 
                                 <a href="{{route('admin.posts.edit', $post)}}" class="btn btn-info"><i class="fa fa-pencil"></i></a>
-                                <a href="#" class="btn btn-danger"><i class="fa fa-times"></i></a>
+
+                                <form method="POST" action="{{ route('admin.posts.destroy', $post) }}" style="display: inline">
+                                  {{csrf_field()}} {{ method_field('DELETE')}}
+                                  <button  class="btn btn-danger" onclick="return confirm('Estas seguro que quieres eliminar el post?')"><i class="fa fa-times"></i></button>
+                                </form>
+                                
                             </td>
                         </tr>
                     @endforeach

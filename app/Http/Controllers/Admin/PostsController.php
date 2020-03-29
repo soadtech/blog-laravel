@@ -8,6 +8,7 @@ use App\Category;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
 
 class PostsController extends Controller
 {
@@ -41,16 +42,7 @@ class PostsController extends Controller
         // return view('admin.posts.edit', compact('post'));
     }
 
-    public function update(Post $post, Request $request){
-        
-        //validacion
-        $this->validate($request, [
-            'title' => 'required',
-            'body' => 'required',
-            'category' => 'required',
-            'excerpt' => 'required'
-        ]);
-
+    public function update(Post $post, StorePostRequest $request){             
 
         // return Post::create($request->all());
         
@@ -59,19 +51,23 @@ class PostsController extends Controller
         $post->body = $request->get('body');
         $post->iframe = $request->get('iframe');
         $post->excerpt = $request->get('excerpt');
-        $post->published_at = $request->has('published_at')
-            ? Carbon::parse($request->get('published_at'))
-            : null;
+        $post->published_at = $request->get('published_at');
+        $post->category_id = $request->get('category_id');
 
-        $post->category_id = Category::find($cat = $request->get('category'))
-            ? $cat
-            : Category::create(['name' => $cat])->id;
-
-        // $post->tags()->attach($request->get('tags'));
-
+        
         $post->save();
+
         return redirect()->route('admin.posts.edit', $post)->with('flash', 'Tu articulo ha sido guardado!');
         
+    }
+
+    public function destroy(Post $post){
+
+        // $post->tags()->detach();
+
+        $post->delete();
+        
+        return redirect()->route('admin.posts.index')->with('flash', 'Tu articulo ha sido eliminado');
     }
 
    

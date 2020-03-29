@@ -10,7 +10,7 @@
 		@foreach($posts as $post)
 		<article class="post ">
 			@if($post->photos->count() === 1)
-				<figure><img src="{{ $post->photos->first()->url }}" alt="" class="img-responsive"></figure>
+				<figure><img src="storage/{{ $post->photos->first()->url }}" alt="" class="img-responsive"></figure>
 			@elseif($post->iframe)
 				<div class="video">
 					{!! $post->iframe !!}

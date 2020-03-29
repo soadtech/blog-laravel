@@ -9,6 +9,17 @@ class Post extends Model
     protected $guarded = [];
     protected $dates = ['published_at'];
 
+    protected static function boot(){
+
+        parent::boot();
+
+        static::deleting(function($post){
+            $post->photos->each->delete();
+         
+            
+        });
+    }
+
 
     public function getRouteKeyName(){
         return 'url';
@@ -30,6 +41,18 @@ class Post extends Model
         $query->latest('published_at')
         ->where('published_at', '<=', Carbon::now());
        
+    }
+
+    public function setPublishedAtAttribute($published_at){
+       
+        $this->attributes['published_at'] = $published_at ? Carbon::parse($published_at) : null;
+    }
+
+    public function setCategoryIdAttribute($category){
+       
+        $this->attributes['category_id'] = Category::find($category)
+            ? $category
+            : Category::create(['name' => $category])->id;
     }
 
 }
